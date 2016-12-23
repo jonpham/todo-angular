@@ -3,9 +3,13 @@
 <div ng-app="app">
   <div ng-controller="taskCtrl">
     <ul>
-      <li>{{ task1 }}</li>
-      <li>{{ task2 }}</li>
-      <li>{{ task3 }}</li>
+      <li ng-repeat="task in tasks">
+        {{ task }} <input ng-model=task>
+      </li>
     </ul>
+
+    <h3>Add New Tasks:</h3>
+    <input ng-model="newTask">
+    <button ng-click="addTask(newTask)">Add Task</button>
   </div>
 </div>
