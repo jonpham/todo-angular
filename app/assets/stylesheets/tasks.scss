@@ -1,3 +1,21 @@
 // Place all the styles related to the Tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+  .strike {
+      text-decoration: line-through;
+  }
+
+  #filter_list {
+    ul {
+      list-style: none;
+      li {
+        display: inline;       
+      }
+    }
+  }
+
+  // #filter_list li {
+  //   border-style : solid;
+  //   border-color : red;
+  // }

@@ -1,15 +1,18 @@
 <h1>AngularTODO tasks</h1>
 
-<style>
-  .strike {
-      text-decoration: line-through;
-  }
-</style>
-
 <div ng-app="app">
   <div ng-controller="taskCtrl">
+    <input ng-model="newTask" ng-click="clearNewTask();">
+    <button ng-click="addTask(newTask);">Add New Task</button>
+    <div id="filter_list">
+      <ul >
+        <li ng-click="showAllTasks();">All</li>
+        <li ng-click="showIncompleteTasks();">Active</li>
+        <li ng-click="showCompletedTasks();">Completed</li>
+      </ul>
+    </div>
     <ul>
-      <li ng-repeat="task in tasks track by $index">
+      <li ng-repeat="task in visibleTasks track by $index">
         <span ng-class="{'strike': task.completed}" ng-click="markDone(task)">
           {{ task.text }}
         </span> 
@@ -18,10 +21,7 @@
     <div>
       <button ng-click="clearCompleted();" ng-if="tasks.length !== numIncomplete">Clear Completed Tasks</button>
     </div>
-    <h4>Number of Incomplete Tasks : {{ numIncomplete }}</h4>
-    <h3>Add New Tasks:</h3>
-    <input ng-model="newTask" ng-click="clearNewTask();">
-    <button ng-click="addTask(newTask);">Add Task</button>
+    <h4>{{ numIncomplete }} Items Left</h4>
   </div>
 </div>
 

@@ -7,7 +7,8 @@
 
       // Page Globals
       $scope.tasks = new Array;
-      $scope.completed_tasks = new Array;
+      $scope.completedTasks = new Array;
+      $scope.visibleTasks = new Array;
       $scope.numIncomplete = 0;
 
       // Function Code
@@ -24,7 +25,7 @@
       }
 
       $scope.getNumIncomplete = function (){
-        return (($scope.tasks.length)-($scope.completed_tasks.length));
+        return (($scope.tasks.length)-($scope.completedTasks.length));
       }
 
       $scope.setNumIncomplete = function () {
@@ -52,14 +53,14 @@
         var task_index = $scope.tasks.indexOf(task);
         if (!task.completed) {
           task.completed=true;
-          if (!$scope.completed_tasks.includes(task_index)) {
-            $scope.completed_tasks.push(task_index);
+          if (!$scope.completedTasks.includes(task_index)) {
+            $scope.completedTasks.push(task_index);
           }
         } else {
           task.completed=false;
-          if ($scope.completed_tasks.includes(task_index)) {
-            var index = $scope.completed_tasks.indexOf(task_index);
-            $scope.completed_tasks.splice(index,1);
+          if ($scope.completedTasks.includes(task_index)) {
+            var index = $scope.completedTasks.indexOf(task_index);
+            $scope.completedTasks.splice(index,1);
           }
         }        
         $scope.setNumIncomplete();
@@ -68,24 +69,55 @@
       }
 
       $scope.clearCompleted = function() {
-        for (var i = 0 ; i < $scope.completed_tasks.length ; i++) {
-          var current_index = $scope.completed_tasks[i];
+        for (var i = 0 ; i < $scope.completedTasks.length ; i++) {
+          var current_index = $scope.completedTasks[i];
           $scope.tasks.splice(current_index,1);
         }
-        $scope.completed_tasks.length = 0;
+        $scope.completedTasks.length = 0;
         $scope.setNumIncomplete();
+      }
+
+      $scope.clearCompletedFromArray = function(array) {
+        var completed_tasks = $scope.completedTasks;
+        for (var i = 0 ; i < completed_tasks.length ; i++) {
+          var current_index = completed_tasks[i];
+          array.splice(current_index,1);
+        }
+        return array;
+      }
+
+      $scope.showCompletedTasks = function() {
+        var completed_tasks = new Array;
+        for (var i = 0 ; i < $scope.tasks.length ; i++) {
+          if ($scope.tasks[i].completed) {
+            completed_tasks.push($scope.tasks[i]);
+          }
+        }
+        $scope.visibleTasks = completed_tasks;
+      }
+
+      $scope.showIncompleteTasks = function() {
+        var incomplete_tasks = $scope.tasks.slice();
+        incomplete_tasks = $scope.clearCompletedFromArray(incomplete_tasks);
+        $scope.visibleTasks = incomplete_tasks;
+      }
+
+      $scope.showAllTasks = function() {
+        var all_tasks = $scope.tasks.slice();
+        $scope.visibleTasks = all_tasks;
       }
 
       $scope.addTask("Do ToDo Controller");
       $scope.addTask("Loop in Angular");
       $scope.addTask("Something Else");
+      $scope.showAllTasks();
       $scope.numIncomplete = $scope.getNumIncomplete();
-
     }
   )
 } 
 ());
 
-// $('li').on('click',function(){
-
-// })
+$("#filter_list ul li").on('hover',function(){
+  $(this).css("border-style", "solid");
+  $(this).css("border-color", "red");
+})
